@@ -375,6 +375,10 @@
     <None Include="ICO\RDC_Header.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Api.Model\Api.Model.csproj">
+      <Project>{3A8EF47E-E57F-43C0-B475-E198D8061F69}</Project>
+      <Name>Api.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CommonTools\CommonTools.csproj">
       <Project>{6D83410F-1413-4671-994C-AF095C3E5937}</Project>
       <Name>CommonTools</Name>
