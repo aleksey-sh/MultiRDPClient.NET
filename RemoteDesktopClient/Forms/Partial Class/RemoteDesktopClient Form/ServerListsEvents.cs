@@ -66,7 +66,7 @@ namespace MultiRemoteDesktopClient
             {
                 Model_ServerDetails sd = (Model_ServerDetails)lvhi.Item.Tag;
 
-                status_TextStatus.Text = sd.ServerName + " - " + sd.Server;
+                status_TextStatus.Text = sd.ServerName + " - " + sd.Host.Name;
 
                 CommonTools.Node n = tlvServerLists.FindNode(sd.ServerName, false);
                 if (n != null)
@@ -122,7 +122,7 @@ namespace MultiRemoteDesktopClient
                 if (!thisSelectedNode.Key.Contains("gid")) // we don't need parent node / group
                 {
                     Model_ServerDetails sd = (Model_ServerDetails)thisSelectedNode.Tag;
-                    status_TextStatus.Text = sd.ServerName + " - " + sd.Server;
+                    status_TextStatus.Text = sd.ServerName + " - " + sd.Host.Name;
                     this.tlvch.EnableControls(true);
 
                     ListViewItem thisItem = this.lvServerLists.FindItemWithText(thisSelectedNode[0].ToString());

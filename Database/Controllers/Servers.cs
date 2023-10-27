@@ -32,23 +32,25 @@ namespace Database
                 {
                     while (base.Database.Reader.Read())
                     {
-                        Model_ServerDetails sd = new Model_ServerDetails()
+                        var pwd = (new Func<string>(() =>
+                        {
+                            string pword = base.Database.Reader["password"].ToString();
+                            if (pword != string.Empty)
+                            {
+                                pword = RijndaelSettings.Decrypt(pword);
+                            }
+
+                            return pword;
+                        }).Invoke());
+
+                        var host = new Host(Database.Reader["server"].ToString(), int.Parse(base.Database.Reader["port"].ToString()));
+                        var creds = new Credentials(Database.Reader["domain"].ToString(),
+                            Database.Reader["username"].ToString(), pwd);
+                        Model_ServerDetails sd = new Model_ServerDetails(host, creds)
                         {
                             UID = base.Database.Reader["uid"].ToString(),
                             GroupID = int.Parse(base.Database.Reader["groupid"].ToString()),
                             ServerName = base.Database.Reader["servername"].ToString(),
-                            Server = base.Database.Reader["server"].ToString(),
-                            Domain = base.Database.Reader["domain"].ToString(),
-                            Port = int.Parse(base.Database.Reader["port"].ToString()),
-                            Username = base.Database.Reader["username"].ToString(),
-
-                            Password = (new Func<string>(() =>
-                            {
-                                string pword = base.Database.Reader["password"].ToString();
-                                if (pword != string.Empty) { pword = RijndaelSettings.Decrypt(pword); }
-
-                                return pword;
-                            }).Invoke()),
 
                             Description = base.Database.Reader["description"].ToString(),
                             ColorDepth = int.Parse(base.Database.Reader["colordepth"].ToString()),
@@ -91,17 +93,19 @@ namespace Database
             #endregion
 
             #region params
-            if (server_details.Password != string.Empty) { server_details.Password = RijndaelSettings.Encrypt(server_details.Password); }
+
+            var pwd = server_details.Login.Password;
+            if (pwd != string.Empty) { pwd = RijndaelSettings.Encrypt(pwd); }
 
             SQLiteParameter[] parameters = {
                                                new SQLiteParameter("@uid", server_details.UID),
                                                new SQLiteParameter("@gid", server_details.GroupID),
                                                new SQLiteParameter("@sname", server_details.ServerName),
-                                               new SQLiteParameter("@server", server_details.Server),
-                                               new SQLiteParameter("@domain", server_details.Domain),
-                                               new SQLiteParameter("@port", server_details.Port),
-                                               new SQLiteParameter("@uname", server_details.Username),
-                                               new SQLiteParameter("@pword", server_details.Password),
+                                               new SQLiteParameter("@server", server_details.Host.Name),
+                                               new SQLiteParameter("@domain", server_details.Login.Domain),
+                                               new SQLiteParameter("@port", server_details.Host.Port),
+                                               new SQLiteParameter("@uname", server_details.Login.UserName),
+                                               new SQLiteParameter("@pword", pwd),
                                                new SQLiteParameter("@desc", server_details.Description),
                                                new SQLiteParameter("@cdepth", server_details.ColorDepth),
                                                new SQLiteParameter("@dwidth", server_details.DesktopWidth),
@@ -158,17 +162,18 @@ WHERE
             #endregion
 
             #region params
-            if (server_details.Password != string.Empty) { server_details.Password = RijndaelSettings.Encrypt(server_details.Password); }
+            var pwd = server_details.Login.Password;
+            if (pwd != string.Empty) { pwd = RijndaelSettings.Encrypt(pwd); }
 
             SQLiteParameter[] parameters = {
                                                new SQLiteParameter("@uid", server_details.UID),
                                                new SQLiteParameter("@gid", server_details.GroupID),
                                                new SQLiteParameter("@sname", server_details.ServerName),
-                                               new SQLiteParameter("@server", server_details.Server),
-                                               new SQLiteParameter("@domain", server_details.Domain),
-                                               new SQLiteParameter("@port", server_details.Port),
-                                               new SQLiteParameter("@uname", server_details.Username),
-                                               new SQLiteParameter("@pword", server_details.Password),
+                                               new SQLiteParameter("@server", server_details.Host.Name),
+                                               new SQLiteParameter("@domain", server_details.Login.Domain),
+                                               new SQLiteParameter("@port", server_details.Host.Port),
+                                               new SQLiteParameter("@uname", server_details.Login.UserName),
+                                               new SQLiteParameter("@pword", pwd),
                                                new SQLiteParameter("@desc", server_details.Description),
                                                new SQLiteParameter("@cdepth", server_details.ColorDepth),
                                                new SQLiteParameter("@dwidth", server_details.DesktopWidth),

@@ -70,11 +70,11 @@ namespace MultiRemoteDesktopClient
             });
 
             txServername.Text = sd.ServerName;
-            txComputer.Text = sd.Server;
-            txDomain.Text = sd.Domain;
-            txPort.Text = sd.Port.ToString();
-            txUsername.Text = sd.Username;
-            txPassword.Text = sd.Password;
+            txComputer.Text = sd.Host.Name;
+            txDomain.Text = sd.Login.Domain;
+            txPort.Text = sd.Host.Port.ToString();
+            txUsername.Text = sd.Login.UserName;
+            txPassword.Text = sd.Login.Password;
             txDescription.Text = sd.Description;
 
             switch (sd.ColorDepth)
@@ -188,15 +188,12 @@ namespace MultiRemoteDesktopClient
                 return;
             }
 
-            Model_ServerDetails sd = new Model_ServerDetails()
+            var host = new Host(txComputer.Text, int.Parse(txPort.Text == string.Empty ? "0" : txPort.Text));
+            var creds = new Credentials(txDomain.Text, txUsername.Text, txPassword.Text);
+            Model_ServerDetails sd = new Model_ServerDetails(host, creds)
             {
                 GroupID = groupId,
                 ServerName = txServername.Text,
-                Server = txComputer.Text,
-                Domain = txDomain.Text,
-                Port = int.Parse(txPort.Text == string.Empty ? "0" : txPort.Text),
-                Username = txUsername.Text,
-                Password = txPassword.Text,
                 Description = txDescription.Text,
                 ColorDepth = (int)lblColorDepth.Tag,
                 DesktopWidth = int.Parse(txWidth.Text),
@@ -212,10 +209,6 @@ namespace MultiRemoteDesktopClient
                     sd.UID = oldSD.UID;
                     
                     GlobalHelper.dbServers.Save(false, sd);
-                    if (sd.Password != string.Empty)
-                    {
-                        sd.Password = RijndaelSettings.Decrypt(sd.Password);
-                    }
 
                     // new settings changed
                     // pass new settings on our oldSD

@@ -19,7 +19,7 @@ namespace MultiRemoteDesktopClient
             {
                 // add items to ListView
                 ListViewItem item = new ListViewItem(sd.ServerName);
-                item.SubItems.Add(sd.Server);
+                item.SubItems.Add(sd.Host.Name);
                 item.SubItems.Add(sd.Description);
                 item.ImageIndex = 1;
                 item.Tag = sd;
@@ -30,7 +30,7 @@ namespace MultiRemoteDesktopClient
                 // add items to TreeListView
                 object[] o = {
                                  sd.ServerName,
-                                 sd.Server,
+                                 sd.Host.Name,
                                  sd.Description
                              };
                 CommonTools.Node n = new CommonTools.Node(o);
@@ -156,7 +156,7 @@ namespace MultiRemoteDesktopClient
 
                 bool canCreateNewForm = true;
                 string formTitlePattern = "Remote Desktop Client - {0}@{1}[{2}]";
-                string formTitle = string.Format(formTitlePattern, sd.Username, sd.ServerName, sd.Server);
+                string formTitle = string.Format(formTitlePattern, sd.Login.UserName, sd.ServerName, sd.Host.Name);
 
                 foreach (Form f in this.MdiChildren)
                 {

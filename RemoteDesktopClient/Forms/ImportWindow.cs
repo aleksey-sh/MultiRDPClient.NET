@@ -59,54 +59,11 @@ namespace MultiRemoteDesktopClient
                 }
                 #endregion
 
-                Model_ServerDetails sd = new Model_ServerDetails();
+                Model_ServerDetails sd = new Model_ServerDetails(new Host(rdpfile.FullAddress), ReadCredentialsFromRDP(rdpfile));
                 sd.UID = DateTime.Now.Ticks.ToString();
                 sd.GroupID = 1;
                 sd.ServerName = System.IO.Path.GetFileNameWithoutExtension(thisFile);
-                sd.Server = rdpfile.FullAddress;
-                sd.Username = rdpfile.Username;
-
-                #region Try decrypting the password from RDP file
-                {
-                    try
-                    {
-                        System.Diagnostics.Debug.WriteLine("reading password " + thisFile);
-
-                        string RDPPassword = rdpfile.Password;
-                        if (RDPPassword != string.Empty)
-                        {
-                            // based on http://www.remkoweijnen.nl/blog/2008/03/02/how-rdp-passwords-are-encrypted-2/
-                            // he saids, MSTSC just add a ZERO number at the end of the hashed password.
-                            // so let's just removed THAT!
-                            RDPPassword = RDPPassword.Substring(0, RDPPassword.Length - 1);
-                            // and decrypt it!
-                            RDPPassword = DataProtection.DataProtectionForRDPWrapper.Decrypt(RDPPassword);
-
-                            sd.Password = RDPPassword;
-                        }
-
-                        System.Diagnostics.Debug.WriteLine("reading password done");
-                    }
-                    catch (Exception Ex)
-                    {
-                        sd.Password = string.Empty;
-
-                        if (Ex.Message == "Problem converting Hex to Bytes")
-                        {
-                            MessageBox.Show("This RDP File '" + Path.GetFileNameWithoutExtension(thisFile) + "' contains a secured password which is currently unsported by this application.\r\nThe importing can still continue but without the password.\r\nYou can edit the password later by selecting a server in 'All Listed Servers' and click 'Edit Settings' button on the toolbar", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                        }
-                        else if (Ex.Message.Contains("Exception decrypting"))
-                        {
-                            MessageBox.Show("Failed to decrypt the password from '" + Path.GetFileNameWithoutExtension(thisFile) + "'", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        else
-                        {
-                            MessageBox.Show("An unknown error occured while decrypting the password from '" + Path.GetFileNameWithoutExtension(thisFile) + "'", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                }
-                #endregion
-
+                
                 sd.Description = "Imported from " + thisFile;
                 sd.ColorDepth = (int)rdpfile.SessionBPP;
                 sd.DesktopWidth = rdpfile.DesktopWidth;
@@ -126,6 +83,53 @@ namespace MultiRemoteDesktopClient
             {
                 ch.Width = -1;
             }
+        }
+
+        private Credentials ReadCredentialsFromRDP(RDPFile file)
+        {
+            string RDPPassword;
+            #region Try decrypting the password from RDP file
+           {
+                try
+                {
+                    //System.Diagnostics.Debug.WriteLine("reading password " + thisFile);
+
+                    RDPPassword = file.Password;
+                    if (RDPPassword != string.Empty)
+                    {
+                        // based on http://www.remkoweijnen.nl/blog/2008/03/02/how-rdp-passwords-are-encrypted-2/
+                        // he saids, MSTSC just add a ZERO number at the end of the hashed password.
+                        // so let's just removed THAT!
+                        RDPPassword = RDPPassword.Substring(0, RDPPassword.Length - 1);
+                        // and decrypt it!
+                        RDPPassword = DataProtection.DataProtectionForRDPWrapper.Decrypt(RDPPassword);
+
+                        RDPPassword = RDPPassword;
+                    }
+
+                    System.Diagnostics.Debug.WriteLine("reading password done");
+                }
+                catch (Exception Ex)
+                {
+                    RDPPassword = string.Empty;
+
+                    if (Ex.Message == "Problem converting Hex to Bytes")
+                    {
+                        MessageBox.Show("This RDP File contains a secured password which is currently unsported by this application.\r\nThe importing can still continue but without the password.\r\nYou can edit the password later by selecting a server in 'All Listed Servers' and click 'Edit Settings' button on the toolbar", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                    else if (Ex.Message.Contains("Exception decrypting"))
+                    {
+                        MessageBox.Show("Failed to decrypt the password", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("An unknown error occured while decrypting the password", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            #endregion
+
+            return new Credentials(file.Domain, file.Username, RDPPassword);
         }
 
         void btnStart_Click(object sender, EventArgs e)

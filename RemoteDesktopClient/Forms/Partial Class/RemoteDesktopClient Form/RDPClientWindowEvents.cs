@@ -13,7 +13,7 @@ namespace MultiRemoteDesktopClient
             if (item != null)
             {
                 item.Text = sd.ServerName;
-                item.SubItems[1].Text = sd.Server;
+                item.SubItems[1].Text = sd.Host.Name;
                 item.SubItems[2].Text = sd.Description;
                 item.Tag = sd;
             }

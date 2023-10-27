@@ -80,7 +80,7 @@ namespace MultiRemoteDesktopClient
                         winpos.WinState = RDPFile.WindowState.MAXMIZE;
 
                         rdp.WinPosStr = winpos;
-                        rdp.FullAddress = sd.Server;
+                        rdp.FullAddress = sd.Host.Name;
                         rdp.Compression = 1;
                         rdp.KeyboardHook = RDPFile.KeyboardHooks.ON_THE_REMOTE_COMPUTER;
                         rdp.AudioMode = RDPFile.AudioModes.BRING_TO_THIS_COMPUTER;
@@ -90,14 +90,14 @@ namespace MultiRemoteDesktopClient
                         rdp.RedirectSmartCards = 0;
                         rdp.DisplayConnectionBar = 1;
                         rdp.AutoReconnectionEnabled = 1;
-                        rdp.Username = sd.Username;
+                        rdp.Username = sd.Login.UserName;
                         rdp.Domain = string.Empty;
                         rdp.AlternateShell = string.Empty;
                         rdp.ShellWorkingDirectory = string.Empty;
 
                         // what's with the ZERO ? 
                         // http://www.remkoweijnen.nl/blog/2008/03/02/how-rdp-passwords-are-encrypted-2/
-                        rdp.Password = (sd.Password == string.Empty ? string.Empty : DataProtectionForRDPWrapper.Encrypt(sd.Password) + "0"); 
+                        rdp.Password = (sd.Login.Password == string.Empty ? string.Empty : DataProtectionForRDPWrapper.Encrypt(sd.Login.Password) + "0"); 
 
                         //System.Diagnostics.Debug.WriteLine(ss.Password);
                         rdp.DisableWallpaper = 1;

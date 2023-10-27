@@ -51,10 +51,10 @@ namespace MultiRemoteDesktopClient
 
             this._sd = sd;
 
-            rdpClient.Server = sd.Server;
-            rdpClient.UserName = sd.Username;
+            rdpClient.Server = sd.Host.Name;
+            rdpClient.UserName = sd.Login.UserName;
             //rdpClient.Domain = sd.dom
-            rdpClient.AdvancedSettings2.ClearTextPassword = sd.Password;
+            rdpClient.AdvancedSettings2.ClearTextPassword = sd.Login.Password;
             rdpClient.ColorDepth = sd.ColorDepth;
             rdpClient.DesktopWidth = sd.DesktopWidth;
             rdpClient.DesktopHeight = sd.DesktopHeight;
@@ -79,9 +79,9 @@ namespace MultiRemoteDesktopClient
 
 
             // custom port
-            if (sd.Port != 0)
+            if (sd.Host.Port != 0)
             {
-                rdpClient.AdvancedSettings2.RDPPort = sd.Port;
+                rdpClient.AdvancedSettings2.RDPPort = sd.Host.Port;
             }
 
             btnConnect.Enabled = false;
@@ -172,7 +172,7 @@ namespace MultiRemoteDesktopClient
 
         void rdpClient_OnDisconnected(object sender, AxMSTSCLib.IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            Status("Disconnected from " + this._sd.Server);
+            Status("Disconnected from " + this._sd.Host.Name);
 
             btnConnect.Enabled = true;
             btnDisconnect.Enabled = false;
@@ -189,7 +189,7 @@ namespace MultiRemoteDesktopClient
 
         void rdpClient_OnLoginComplete(object sender, EventArgs e)
         {
-            Status("Loged in using " + this._sd.Username + " user account");
+            Status("Loged in using " + this._sd.Login.UserName + " user account");
 
             { // check connection status on output
                 System.Diagnostics.Debug.WriteLine("OnLoginComplete " + rdpClient.Connected);
@@ -203,7 +203,7 @@ namespace MultiRemoteDesktopClient
 
         void rdpClient_OnConnected(object sender, EventArgs e)
         {
-            Status("Connected to " + this._sd.Server);
+            Status("Connected to " + this._sd.Host.Name);
 
             { // check connection status on output
                 System.Diagnostics.Debug.WriteLine("OnConnected " + rdpClient.Connected);
@@ -217,7 +217,7 @@ namespace MultiRemoteDesktopClient
 
         void rdpClient_OnConnecting(object sender, EventArgs e)
         {
-            Status("Connecting to " + this._sd.Server);
+            Status("Connecting to " + this._sd.Host.Name);
 
             btnConnect.Enabled = false;
             btnDisconnect.Enabled = true;
@@ -408,9 +408,9 @@ namespace MultiRemoteDesktopClient
 
             if (hasChanges)
             {
-                rdpClient.Server = this._sd.Server;
-                rdpClient.UserName = this._sd.Username;
-                rdpClient.AdvancedSettings2.ClearTextPassword = this._sd.Password;
+                rdpClient.Server = this._sd.Host.Name;
+                rdpClient.UserName = this._sd.Login.UserName;
+                rdpClient.AdvancedSettings2.ClearTextPassword = this._sd.Login.Password;
                 rdpClient.ColorDepth = this._sd.ColorDepth;
 
                 this._isFitToWindow = isFitToWindow;

@@ -175,7 +175,7 @@ namespace MultiRemoteDesktopClient
         Rectangle ssw_GetClientWindowSize()
         {
             Model_ServerDetails sd = (Model_ServerDetails)lvServerLists.Items[this._selIndex].Tag;
-            RdpClientWindow rdpClientWin = GetClientWindowByTitleParams(sd.Username, sd.ServerName, sd.Server);
+            RdpClientWindow rdpClientWin = GetClientWindowByTitleParams(sd.Login.UserName, sd.ServerName, sd.Host.Name);
 
             if (rdpClientWin != null)
             {
@@ -191,7 +191,7 @@ namespace MultiRemoteDesktopClient
 
         void ssw_ApplySettings(object sender, Model_ServerDetails sd)
         {
-            RdpClientWindow rdpClientWin = GetClientWindowByTitleParams(sd.Username, sd.ServerName, sd.Server);
+            RdpClientWindow rdpClientWin = GetClientWindowByTitleParams(sd.Login.UserName, sd.ServerName, sd.Host.Name);
 
             if (rdpClientWin != null)
             {

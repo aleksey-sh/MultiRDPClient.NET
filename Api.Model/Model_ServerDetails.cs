@@ -2,43 +2,18 @@
 {
     public class Model_ServerDetails
     {
-        string _password = string.Empty;
+        public Model_ServerDetails(Host host, Credentials login)
+        {
+            Host = host;
+            Login = login;
+        }
 
         public string UID { get; set; } = string.Empty;
 
         public string ServerName { get; set; } = string.Empty;
 
-        public string Server { get; set; } = string.Empty;
-
-        public string Domain { get; set; } = string.Empty;
-
-        public int Port { get; set; } = 0;
-
-        public string Username { get; set; } = string.Empty;
-
-        public string Password
-        {
-            get
-            {
-                //if (this._password != string.Empty)
-                //{
-                //    this._password = RijndaelSettings.Decrypt(this._password);
-                //}
-
-                return this._password;
-            }
-            set
-            {
-                string val = value;
-
-                //if (val != string.Empty)
-                //{
-                //    val = RijndaelSettings.Encrypt(val);
-                //}
-
-                this._password = val;
-            }
-        }
+        public Host Host { get; set; }
+        public Credentials Login { get; }
 
         public string Description { get; set; } = string.Empty;
 
