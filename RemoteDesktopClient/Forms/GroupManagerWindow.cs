@@ -1,7 +1,7 @@
-﻿using Database.Models;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Api.Model;
 using TextboxRequiredWrappers;
 
 namespace MultiRemoteDesktopClient
@@ -46,7 +46,7 @@ namespace MultiRemoteDesktopClient
             if (group_name == null) { return; }
 
             int groupid = int.Parse(lvGroups.SelectedItems[0].Tag.ToString());
-            Model_GroupDetails gd = new Model_GroupDetails();
+            GroupDetails gd = new GroupDetails();
             gd.GroupID = groupid;
             gd.GroupName = group_name;
             GlobalHelper.dbGroups.Save(false, gd);
@@ -77,7 +77,7 @@ namespace MultiRemoteDesktopClient
                 if (dr == DialogResult.Yes)
                 {
                     GlobalHelper.dbServers.Read();
-                    foreach (Model_ServerDetails sd in GlobalHelper.dbServers.ArrayListServers)
+                    foreach (ServerDetails sd in GlobalHelper.dbServers.ArrayListServers)
                     {
                         if (groupid == sd.GroupID)
                         {
@@ -112,7 +112,7 @@ namespace MultiRemoteDesktopClient
             string group_name = CreateForm(string.Empty);
             if (group_name == null) { return; }
 
-            Model_GroupDetails gd = new Model_GroupDetails();
+            GroupDetails gd = new GroupDetails();
             gd.GroupName = group_name;
 
             try
@@ -214,7 +214,7 @@ namespace MultiRemoteDesktopClient
             lv.Items.Clear();
 
             GlobalHelper.dbGroups.GetGroupsWithServerCount();
-            foreach (Model_GroupDetails gd in GlobalHelper.dbGroups.ArrayListGroups)
+            foreach (GroupDetails gd in GlobalHelper.dbGroups.ArrayListGroups)
             {
                 ListViewItem item = new ListViewItem(gd.GroupName);
                 item.SubItems.Add(gd.ServerCount.ToString());

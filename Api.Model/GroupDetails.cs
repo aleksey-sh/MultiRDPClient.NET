@@ -1,6 +1,6 @@
-﻿namespace Database.Models
+﻿namespace Api.Model
 {
-    public class Model_GroupDetails
+    public class GroupDetails
     {
         public int GroupID { get; set; } = 0;
 

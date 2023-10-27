@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using Database.Models;
+using Api.Model;
 
 namespace MultiRemoteDesktopClient
 {
@@ -15,7 +15,7 @@ namespace MultiRemoteDesktopClient
 
             GlobalHelper.dbServers.Read();
 
-            foreach (Model_ServerDetails sd in GlobalHelper.dbServers.ArrayListServers)
+            foreach (ServerDetails sd in GlobalHelper.dbServers.ArrayListServers)
             {
                 // add items to ListView
                 ListViewItem item = new ListViewItem(sd.ServerName);
@@ -46,7 +46,7 @@ namespace MultiRemoteDesktopClient
         {
             GlobalHelper.dbGroups.Read();
             
-            foreach (Model_GroupDetails gd in GlobalHelper.dbGroups.ArrayListGroups)
+            foreach (GroupDetails gd in GlobalHelper.dbGroups.ArrayListGroups)
             {
                 // add groups to ListView
                 ListViewGroup lvg = new ListViewGroup("gid" + gd.GroupID.ToString(), gd.GroupName);
@@ -152,7 +152,7 @@ namespace MultiRemoteDesktopClient
 
             lock (x)
             {
-                Model_ServerDetails sd = (Model_ServerDetails)lvServerLists.Items[this._selIndex].Tag;
+                ServerDetails sd = (ServerDetails)lvServerLists.Items[this._selIndex].Tag;
 
                 bool canCreateNewForm = true;
                 string formTitlePattern = "Remote Desktop Client - {0}@{1}[{2}]";

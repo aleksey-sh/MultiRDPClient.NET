@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
-using Database.Models;
+using Api.Model;
 
 namespace MultiRemoteDesktopClient
 {
@@ -141,7 +141,7 @@ namespace MultiRemoteDesktopClient
 
         void btnDelete_Click(object sender, EventArgs e)
         {
-            Model_ServerDetails sd = (Model_ServerDetails)lvServerLists.Items[this._selIndex].Tag;
+            ServerDetails sd = (ServerDetails)lvServerLists.Items[this._selIndex].Tag;
 
             DialogResult dr = MessageBox.Show("Are you sure you want to delete this server " + sd.ServerName + " from the server list", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -160,7 +160,7 @@ namespace MultiRemoteDesktopClient
 
         private void OpenSettingsWindow(object sender, EventArgs e)
         {
-            Model_ServerDetails sd = (Model_ServerDetails)lvServerLists.Items[this._selIndex].Tag;
+            ServerDetails sd = (ServerDetails)lvServerLists.Items[this._selIndex].Tag;
             
             ServerSettingsWindow ssw = new ServerSettingsWindow(sd);
             ssw.ApplySettings += new ApplySettings(ssw_ApplySettings);
@@ -174,7 +174,7 @@ namespace MultiRemoteDesktopClient
 
         Rectangle ssw_GetClientWindowSize()
         {
-            Model_ServerDetails sd = (Model_ServerDetails)lvServerLists.Items[this._selIndex].Tag;
+            ServerDetails sd = (ServerDetails)lvServerLists.Items[this._selIndex].Tag;
             RdpClientWindow rdpClientWin = GetClientWindowByTitleParams(sd.Login.UserName, sd.ServerName, sd.Host.Name);
 
             if (rdpClientWin != null)
@@ -189,7 +189,7 @@ namespace MultiRemoteDesktopClient
             }
         }
 
-        void ssw_ApplySettings(object sender, Model_ServerDetails sd)
+        void ssw_ApplySettings(object sender, ServerDetails sd)
         {
             RdpClientWindow rdpClientWin = GetClientWindowByTitleParams(sd.Login.UserName, sd.ServerName, sd.Host.Name);
 

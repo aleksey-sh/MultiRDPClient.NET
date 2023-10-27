@@ -1,14 +1,14 @@
-﻿using Database.Models;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Api.Model;
 using TextboxRequiredWrappers;
 
 namespace MultiRemoteDesktopClient
 {
-    public delegate void ApplySettings(object sender, Model_ServerDetails sd);
+    public delegate void ApplySettings(object sender, ServerDetails sd);
     public delegate Rectangle GetClientWindowSize();
 
     public partial class ServerSettingsWindow : Form
@@ -17,7 +17,7 @@ namespace MultiRemoteDesktopClient
         public event GetClientWindowSize GetClientWindowSize;
 
         TextboxRequiredWrapper trw = new TextboxRequiredWrapper();
-        Model_ServerDetails oldSD;
+        ServerDetails oldSD;
 
         private bool isUpdating = false;
 
@@ -28,7 +28,7 @@ namespace MultiRemoteDesktopClient
             InitializeControlEvents();
         }
 
-        public ServerSettingsWindow(Model_ServerDetails sd)
+        public ServerSettingsWindow(ServerDetails sd)
         {
             InitializeComponent();
             InitializeControls(sd);
@@ -58,7 +58,7 @@ namespace MultiRemoteDesktopClient
             GlobalHelper.PopulateGroupsDropDown(ddGroup, string.Empty);
         }
 
-        public void InitializeControls(Model_ServerDetails sd)
+        public void InitializeControls(ServerDetails sd)
         {
             this.oldSD = sd;
 
@@ -190,7 +190,7 @@ namespace MultiRemoteDesktopClient
 
             var host = new Host(txComputer.Text, int.Parse(txPort.Text == string.Empty ? "0" : txPort.Text));
             var creds = new Credentials(txDomain.Text, txUsername.Text, txPassword.Text);
-            Model_ServerDetails sd = new Model_ServerDetails(host, creds)
+            ServerDetails sd = new ServerDetails(host, creds)
             {
                 GroupID = groupId,
                 ServerName = txServername.Text,
@@ -323,7 +323,7 @@ namespace MultiRemoteDesktopClient
             }
         }
 
-        public Model_ServerDetails CurrentServerSettings()
+        public ServerDetails CurrentServerSettings()
         {
             return oldSD;
         }

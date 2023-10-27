@@ -43,8 +43,8 @@
   <ItemGroup>
     <Compile Include="Credentials.cs" />
     <Compile Include="Host.cs" />
-    <Compile Include="Model_GroupDetails.cs" />
-    <Compile Include="Model_ServerDetails.cs" />
+    <Compile Include="GroupDetails.cs" />
+    <Compile Include="ServerDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,7 +1,7 @@
-﻿using Database.Models;
-using System;
+﻿using System;
 using System.Collections;
 using System.Data.SQLite;
+using Api.Model;
 
 namespace Database
 {
@@ -25,7 +25,7 @@ namespace Database
             {
                 while (base.Database.Reader.Read())
                 {
-                    Model_GroupDetails gd = new Model_GroupDetails();
+                    GroupDetails gd = new GroupDetails();
                     gd.GroupID = int.Parse(base.Database.Reader["groupid"].ToString());
                     gd.GroupName = base.Database.Reader["group_name"].ToString();
 
@@ -42,7 +42,7 @@ namespace Database
             base.Database.CloseConnection();
         }
 
-        public void Save(bool isNew, Model_GroupDetails group_details)
+        public void Save(bool isNew, GroupDetails group_details)
         {
             if (isNew)
             {
@@ -54,7 +54,7 @@ namespace Database
             }
         }
 
-        private void Save(Model_GroupDetails group_details)
+        private void Save(GroupDetails group_details)
         {
             string sql = "INSERT INTO Groups(groupid, group_name) VALUES((select count(Groups.groupid) from groups) + 1, @gname);";
             SQLiteParameter[] parameters = {
@@ -84,7 +84,7 @@ namespace Database
             base.Database.CloseConnection();
         }
 
-        private void Update(Model_GroupDetails group_details)
+        private void Update(GroupDetails group_details)
         {
             string sql = "UPDATE Groups SET groupid = @gid, group_name = @gname WHERE groupid = @gid";
             SQLiteParameter[] parameters = {
@@ -211,7 +211,7 @@ namespace Database
 
                     while (base.Database.Reader.Read())
                     {
-                        Model_GroupDetails gd = new Model_GroupDetails();
+                        GroupDetails gd = new GroupDetails();
                         gd.GroupID = int.Parse(base.Database.Reader["groupid"].ToString());
                         gd.GroupName = base.Database.Reader["group_name"].ToString();
                         gd.ServerCount = int.Parse(base.Database.Reader["ServerCount"].ToString());

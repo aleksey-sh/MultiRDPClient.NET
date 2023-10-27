@@ -1,12 +1,12 @@
-﻿using Database.Models;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using Api.Model;
 
 namespace MultiRemoteDesktopClient
 {
     partial class RemoteDesktopClient
     {
-        void clientWin_ServerSettingsChanged(object sender, Model_ServerDetails sd, int ListIndex)
+        void clientWin_ServerSettingsChanged(object sender, ServerDetails sd, int ListIndex)
         {
             ListViewItem item = lvServerLists.Items[ListIndex];
 

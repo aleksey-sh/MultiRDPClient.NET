@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
-using Database.Models;
+using Api.Model;
 
 namespace MultiRemoteDesktopClient
 {
@@ -59,7 +59,7 @@ namespace MultiRemoteDesktopClient
                 }
                 #endregion
 
-                Model_ServerDetails sd = new Model_ServerDetails(new Host(rdpfile.FullAddress), ReadCredentialsFromRDP(rdpfile));
+                ServerDetails sd = new ServerDetails(new Host(rdpfile.FullAddress), ReadCredentialsFromRDP(rdpfile));
                 sd.UID = DateTime.Now.Ticks.ToString();
                 sd.GroupID = 1;
                 sd.ServerName = System.IO.Path.GetFileNameWithoutExtension(thisFile);
@@ -138,7 +138,7 @@ namespace MultiRemoteDesktopClient
             {
                 thisItem.SubItems[1].Text = "Importing...";
 
-                Model_ServerDetails sd = (Model_ServerDetails)thisItem.Tag;
+                ServerDetails sd = (ServerDetails)thisItem.Tag;
 
                 try
                 {

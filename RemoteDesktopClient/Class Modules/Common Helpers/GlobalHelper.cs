@@ -1,6 +1,6 @@
 ﻿using Database;
 using System.Windows.Forms;
-using Database.Models;
+using Api.Model;
 
 namespace MultiRemoteDesktopClient
 {
@@ -62,7 +62,7 @@ namespace MultiRemoteDesktopClient
 
             dbGroups.Read();
 
-            foreach (Model_GroupDetails gd in dbGroups.ArrayListGroups)
+            foreach (GroupDetails gd in dbGroups.ArrayListGroups)
             {
                 cb.Items.Add(gd.GroupName);
             }

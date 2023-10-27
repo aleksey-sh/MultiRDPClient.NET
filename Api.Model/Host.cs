@@ -1,4 +1,4 @@
-﻿namespace Database.Models
+﻿namespace Api.Model
 {
     public class Host
     {

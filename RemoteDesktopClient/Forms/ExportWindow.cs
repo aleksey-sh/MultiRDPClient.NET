@@ -3,7 +3,7 @@ using RDPFileReader;
 using System;
 using System.IO;
 using System.Windows.Forms;
-using Database.Models;
+using Api.Model;
 
 namespace MultiRemoteDesktopClient
 {
@@ -62,7 +62,7 @@ namespace MultiRemoteDesktopClient
                     {
                         thisItem.SubItems[1].Text = "Importing...";
 
-                        Model_ServerDetails sd = (Model_ServerDetails)thisItem.Tag;
+                        ServerDetails sd = (ServerDetails)thisItem.Tag;
 
                         RDPFile rdp = new RDPFile();
                         rdp.ScreenMode = 1;

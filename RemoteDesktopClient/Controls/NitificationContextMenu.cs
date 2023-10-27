@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Windows.Forms;
-using Database.Models;
+using Api.Model;
 
 namespace MultiRemoteDesktopClient
 {
     public delegate void DelegateDisconnectEvent(object sender, EventArgs e);
     public delegate void DelegateConfigurationEvent(object sender, EventArgs e);
     public delegate void DelegateLockEvent(object sender, EventArgs e);
-    public delegate void DelegateServerEvent(object sender, EventArgs e, Model_ServerDetails server_details);
+    public delegate void DelegateServerEvent(object sender, EventArgs e, ServerDetails server_details);
 
     public class NotificationContextMenu : ContextMenuStrip
     {
@@ -33,13 +33,13 @@ namespace MultiRemoteDesktopClient
             //ToolStripMenuItem[] menuItemGroups = new ToolStripMenuItem[groups.Count];
 
             //int cnt = 0;
-            //foreach (Model_GroupDetails gd in groups)
+            //foreach (GroupDetails gd in groups)
             //{
             //    //if (gd.ServerCount == 0) { continue; }
 
             //    ToolStripMenuItem[] menuItemServers = new ToolStripMenuItem[gd.ServerCount];
             //    int scnt = 0;
-            //    foreach (Model_ServerDetails sd in servers)
+            //    foreach (ServerDetails sd in servers)
             //    {
             //        if (gd.GroupID == sd.GroupID)
             //        {
@@ -84,7 +84,7 @@ namespace MultiRemoteDesktopClient
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
             if (OnServer_Clicked != null)
             {
-                OnServer_Clicked(this, e, (Model_ServerDetails)menuItem.Tag);
+                OnServer_Clicked(this, e, (ServerDetails)menuItem.Tag);
             }
         }
 

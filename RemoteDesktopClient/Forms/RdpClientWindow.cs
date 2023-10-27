@@ -1,7 +1,7 @@
-﻿using Database.Models;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Api.Model;
 using Win32APIs;
 
 namespace MultiRemoteDesktopClient
@@ -13,7 +13,7 @@ namespace MultiRemoteDesktopClient
     public delegate void OnFormClosing(object sender, FormClosingEventArgs e, int ListIndex, IntPtr Handle);
     public delegate void OnFormActivated(object sender, EventArgs e, int ListIndex, IntPtr Handle);
     public delegate void OnFormShown(object sender, EventArgs e, int ListIndex, IntPtr Handle);
-    public delegate void ServerSettingsChanged(object sender, Model_ServerDetails sd, int ListIndex);
+    public delegate void ServerSettingsChanged(object sender, ServerDetails sd, int ListIndex);
 
     public partial class RdpClientWindow : Form
     {
@@ -26,14 +26,14 @@ namespace MultiRemoteDesktopClient
         public event OnFormShown OnFormShown;
         public event ServerSettingsChanged ServerSettingsChanged;
 
-        public Model_ServerDetails _sd;
+        public ServerDetails _sd;
 
         // used to easly locate in Server lists (RemoteDesktopClient)
         private int _listIndex = 0;
 
         private bool _isFitToWindow = false;
 
-        public RdpClientWindow(Model_ServerDetails sd, Form parent)
+        public RdpClientWindow(ServerDetails sd, Form parent)
         {
             InitializeComponent();
             InitializeControl(sd);
@@ -43,7 +43,7 @@ namespace MultiRemoteDesktopClient
             this.Visible = true;
         }
 
-        public void InitializeControl(Model_ServerDetails sd)
+        public void InitializeControl(ServerDetails sd)
         {
             GlobalHelper.infoWin.AddControl(new object[] {
                 btnFitToScreen
@@ -241,7 +241,7 @@ namespace MultiRemoteDesktopClient
             return rdpClient.RectangleToScreen(rdpClient.ClientRectangle);
         }
 
-        void ssw_ApplySettings(object sender, Model_ServerDetails sd)
+        void ssw_ApplySettings(object sender, ServerDetails sd)
         {
             this._sd = sd;
 

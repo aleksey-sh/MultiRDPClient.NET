@@ -1,7 +1,7 @@
-﻿using Database.Models;
-using System;
+﻿using System;
 using System.Collections;
 using System.Data.SQLite;
+using Api.Model;
 
 namespace Database
 {
@@ -46,7 +46,7 @@ namespace Database
                         var host = new Host(Database.Reader["server"].ToString(), int.Parse(base.Database.Reader["port"].ToString()));
                         var creds = new Credentials(Database.Reader["domain"].ToString(),
                             Database.Reader["username"].ToString(), pwd);
-                        Model_ServerDetails sd = new Model_ServerDetails(host, creds)
+                        ServerDetails sd = new ServerDetails(host, creds)
                         {
                             UID = base.Database.Reader["uid"].ToString(),
                             GroupID = int.Parse(base.Database.Reader["groupid"].ToString()),
@@ -73,7 +73,7 @@ namespace Database
             base.Database.CloseConnection();
         }
 
-        public void Save(bool isNew, Model_ServerDetails server_details)
+        public void Save(bool isNew, ServerDetails server_details)
         {
             if (isNew)
             {
@@ -85,7 +85,7 @@ namespace Database
             }
         }
 
-        private void Save(Model_ServerDetails server_details)
+        private void Save(ServerDetails server_details)
         {
             #region sql
             string sql = "INSERT INTO Servers(uid, groupid, servername, server, domain, port, username, password, description, colordepth, desktopwidth, desktopheight, fullscreen) ";
@@ -137,7 +137,7 @@ namespace Database
             base.Database.CloseConnection();
         }
 
-        private void Update(Model_ServerDetails server_details)
+        private void Update(ServerDetails server_details)
         {
             #region sql
             string sql = @"

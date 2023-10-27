@@ -1,8 +1,8 @@
-﻿namespace Database.Models
+﻿namespace Api.Model
 {
-    public class Model_ServerDetails
+    public class ServerDetails
     {
-        public Model_ServerDetails(Host host, Credentials login)
+        public ServerDetails(Host host, Credentials login)
         {
             Host = host;
             Login = login;
